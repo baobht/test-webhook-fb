@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 let getHomePage = (req, res) => {
   return res.send("Hello world!");
 };
@@ -34,8 +35,13 @@ let postWebHook = (req, res) => {
   if (body.object === "page") {
     // Returns a '200 OK' response to all requests
     body.entry.forEach((entry) => {
+      // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
+
+      // Get the sender PSID
+      let sender_psid = webhook_event.sender.id;
+      console.log("Sender PSID: " + sender_psid);
     });
 
     res.status(200).send("EVENT_RECEIVED");
